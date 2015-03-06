@@ -2,7 +2,89 @@
 @import "compass/reset";
 @import "compass/css3";
 
+@mixin transform-rotate($deg) {
+  -webkit-transform: rotate($deg);
+  -moz-transform: rotate($deg);
+  -ms-transform: rotate($deg);
+  -o-transform: rotate($deg);
+  transform: rotate($deg);
+}
+
+@mixin animation-delay($animation-delay) {
+  -webkit-animation-delay: $animation-delay;
+  -moz-animation-delay: $animation-delay;
+  -o-animation-delay: $animation-delay;
+  animation-delay: $animation-delay;
+}
+
 //Imports do projeto
-h1 {
-    color: red;
+.lines-wrapper {
+    background-color: #F48634;
+    width: 80%;
+    height: 86%;
+    margin: 50px auto;
+    position: relative;
+}
+
+.lines {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    position: absolute;
+
+    & + .lines {
+        @include transform(scale(-1, 1) rotate(180deg));
+        right: 1.2%;
+
+        &::after {
+            background-color: #fff;
+        }
+    }
+}
+
+.line {
+    background-color: #fff;
+    width: 0.6%;
+    height: 19%;
+    margin: 0 0.8%;
+    display: inline-block;
+    vertical-align: text-top;
+    position: relative;
+
+    @include animation(animate-lines 6s infinite 6s ease-in);
+
+    &::after {
+        content: '';
+        background-color: #A4DADC;
+        height: 1.2em;
+        width: 1em;
+        left: -35%;
+        display: block;
+        @include border-radius(50%);
+        position: absolute;
+        top: calc(100% - 10px);
+        opacity: 1;
+
+        @include animation(animate-lines-circle 6s infinite ease-in);
+
+        @for $i from 1 through 29 {
+            @include animation-delay($i/2 + "s");
+        }
+    }
+}
+
+
+
+@-webkit-keyframes animate-lines {
+    50% { height: 58% }
+}
+
+@-webkit-keyframes animate-lines-circle {
+    // 0% { left: 50% }
+    45% {
+        height: 0;
+        width: 0;
+        left: 0;
+        opacity: 0;
+    }
 }
